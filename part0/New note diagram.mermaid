@@ -1,0 +1,48 @@
+ title Adding a New Note
+
+ browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+
+ note over server:
+ server handles the addition of the code
+ with Javscript and calls /notes to refresh
+ the page to show the new note
+ end note
+
+ server->browser: HTML-code
+
+ browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+ server->browser: HTML-code
+
+ note over browser:
+ the HTML code is executed to give the website
+ its structure and shape
+ end note
+
+ browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+ server->browser: main.css
+
+ note over browser:
+ the CSS code is executed to give the website
+ its styling.
+ end note
+
+ browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+
+ server->browser: main.js
+
+ note over browser:
+ execution of the javascript code is handled by
+ the browser to retrieve the JSON file
+ end note
+
+ note over server:
+ the refreshed version of the page is returned
+ in order to show the new note.
+ end note
+
+ server-->browser: [{ content: "HTML is easy", date: "2019-05-23" }, ...]
+
+ note over browser:
+ the event handler is executed in order to show
+ the new note as well as other notes in the JSON
+ end note

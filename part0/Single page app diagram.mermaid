@@ -1,0 +1,29 @@
+title Single Page App Diagram
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
+server->browser: HTML-code
+
+note over browser:
+HTML code is used by the browser to
+give the website its shape and structure.
+end note
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server->browser: main.css
+
+note over browser:
+CSS code is used by the browser to
+give the website elements their styling.
+end note
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+server->browser: main.js
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+
+note over browser:
+JS code is ran by the browser to trigger
+event handlers to retrieve the notes.
+end note
+
+server->browser: [{ content: "HTML is easy", date: "2019-05-23" }, ...]

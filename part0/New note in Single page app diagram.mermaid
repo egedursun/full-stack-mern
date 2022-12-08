@@ -1,0 +1,26 @@
+title Single Page Add New Note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+server->browser: {"message":"note created"}
+
+note over browser:
+new note is created without redirection,
+but the browser is notified by a success message.
+end note
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+server->browser: main.js
+
+note over browser:
+event handler in javascript code is notified
+to refresh the list of notes
+end note
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+
+note over browser:
+JS code is ran by the browser to trigger
+event handlers to retrieve the notes.
+end note
+
+server->browser: [{ content: "HTML is easy", date: "2019-05-23" }, ...]
