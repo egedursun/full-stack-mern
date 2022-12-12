@@ -4,16 +4,25 @@ import People from "./components/People";
 import Form from "./components/Form";
 import SearchFilter from "./components/SearchFilter";
 
+import axios from "axios";
+
 const App = () => {
 
-    const [persons, setPersons] = useState([
-        {name : "Arto Hellas", phone: "5556667788", id: 1}
-    ]);
+    const [persons, setPersons] = useState([]);
 
     const [newName, setNewName] = useState("");
     const [newPhone, setNewPhone] = useState("");
     const [filtWord, setFiltWord] = useState("");
     const [filteredList, setFilteredList] = useState(persons);
+
+    useEffect(() => {
+        axios
+            .get("http://localhost:3001/persons")
+            .then(response => {
+                const ps = response.data
+                setPersons(ps);
+            })
+    }, []);
 
     const addPerson = (event) => {
         event.preventDefault();
@@ -24,7 +33,7 @@ const App = () => {
         }
         else {
             const newPersons = persons.concat(
-                {name: newName, phone: newPhone, id: (persons.length + 1)}
+                {name: newName, number: newPhone, id: (persons.length + 1)}
             )
 
             setPersons(newPersons);
