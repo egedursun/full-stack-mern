@@ -7,7 +7,7 @@ import SearchFilter from "./components/SearchFilter";
 const App = () => {
 
     const [persons, setPersons] = useState([
-        {name : "Arto Hellas", phone: "5556667788"}
+        {name : "Arto Hellas", phone: "5556667788", id: 1}
     ]);
 
     const [newName, setNewName] = useState("");
@@ -24,7 +24,7 @@ const App = () => {
         }
         else {
             const newPersons = persons.concat(
-                {name: newName, phone: newPhone}
+                {name: newName, phone: newPhone, id: (persons.length + 1)}
             )
 
             setPersons(newPersons);

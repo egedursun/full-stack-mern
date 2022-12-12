@@ -1,7 +1,6 @@
 import Person from "./Person";
 
 const People = ({filteredList}) => {
-    console.log(filteredList);
     return (
         <div>
             <ul>
