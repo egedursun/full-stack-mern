@@ -3,8 +3,10 @@ import { useState, useEffect } from "react";
 import People from "./components/People";
 import Form from "./components/Form";
 import SearchFilter from "./components/SearchFilter";
+import Notification from "./components/Notification";
 
 import personService from "./services/persons"
+import Error from "./components/Error";
 
 const App = () => {
 
@@ -14,6 +16,8 @@ const App = () => {
     const [newPhone, setNewPhone] = useState("");
     const [filtWord, setFiltWord] = useState("");
     const [filteredList, setFilteredList] = useState(persons);
+    const [notification, setNotification] = useState(null);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         personService.getAll()
@@ -47,10 +51,20 @@ const App = () => {
                                 setNewPhone("")
                             })
                     })
+
+                setNotification( `Updated ${newName}`)
+
+                setTimeout(() => {
+                    setNotification(null);
+                }, 2500)
             }
         }
         else {
-            const newPerson = {name: newName, number: newPhone, id: (persons.length + 1)}
+
+            const vals = Object.keys(persons).map((key) => {return persons[key]})
+            const maxVal = Math.max.apply(null, vals)
+
+            const newPerson = {name: newName, number: newPhone, id: (maxVal + 1)}
 
             personService.create(newPerson)
                 .then((result) => {
@@ -58,6 +72,12 @@ const App = () => {
                     setNewName("")
                     setNewPhone("")
                 })
+
+            setNotification(`Added ${newName}`)
+
+            setTimeout(() => {
+                setNotification(null);
+            }, 2500)
         }
 
         setNewName("");
@@ -100,6 +120,8 @@ const App = () => {
     return (
       <div>
             <h2>Phonebook</h2>
+            <Notification message={notification}/>
+            <Error message={error}/>
             <SearchFilter filtWord={filtWord}
                             handleFilterChange={handleFilterChange}/>
             <h3>add a new</h3>
@@ -109,7 +131,9 @@ const App = () => {
                     handleNameChange={handleNameChange}
                     handlePhoneChange={handlePhoneChange}/>
             <h3>Numbers</h3>
-            <People filteredList={filteredList} persons={persons} setPersons={setPersons} setFilterWord={setFiltWord} setFilteredList={setFilteredList}/>
+            <People filteredList={filteredList} persons={persons} setPersons={setPersons}
+                    setFilterWord={setFiltWord} setFilteredList={setFilteredList}
+                    setErrorMessage={setNotification} setError={setError}/>
       </div>
     );
 }

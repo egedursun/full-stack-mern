@@ -1,14 +1,3 @@
 {
-  "persons": [
-    {
-      "name": "ege dursun",
-      "number": "23843278",
-      "id": 1
-    },
-    {
-      "name": "eggge dursun",
-      "number": "28347",
-      "id": 2
-    }
-  ]
+  "persons": []
 }
