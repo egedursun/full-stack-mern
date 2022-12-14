@@ -1,7 +1,13 @@
 
-const Person = ({filteredPerson}) => {
+const Person = ({filteredPerson, handleDeleteClicked}) => {
     return (
-        <li>{filteredPerson.name} {filteredPerson.number}</li>
+        <li>
+            <span>
+                {filteredPerson.name + " "}
+                {filteredPerson.number + " "}
+                <button onClick={handleDeleteClicked}>delete</button>
+            </span>
+        </li>
     );
 };
 

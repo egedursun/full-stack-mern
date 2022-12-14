@@ -4,7 +4,7 @@ import People from "./components/People";
 import Form from "./components/Form";
 import SearchFilter from "./components/SearchFilter";
 
-import axios from "axios";
+import personService from "./services/persons"
 
 const App = () => {
 
@@ -16,11 +16,9 @@ const App = () => {
     const [filteredList, setFilteredList] = useState(persons);
 
     useEffect(() => {
-        axios
-            .get("http://localhost:3001/persons")
-            .then(response => {
-                const ps = response.data
-                setPersons(ps);
+        personService.getAll()
+            .then(content => {
+                setPersons(content);
             })
     }, []);
 
@@ -28,15 +26,38 @@ const App = () => {
         event.preventDefault();
 
         if (persons.some(el => el.name === newName)){
-            const alertMessage = `${newName} is already added to phonebook`;
-            alert(alertMessage);
+            let res = persons.filter(el => {
+                if(el.name === newName){
+                    return el
+                }
+            })[0]
+
+            const alertMessage = `${newName} is already added to phonebook, replace the old number with a new one?`;
+            if (window.confirm(alertMessage)) {
+
+                const updatedPerson = {name: res["name"], number: newPhone, id: res.id}
+
+                personService.update(updatedPerson.id, updatedPerson)
+                    .then(() => {
+
+                        personService.getAll()
+                            .then((result) => {
+                                setPersons(result)
+                                setNewName("")
+                                setNewPhone("")
+                            })
+                    })
+            }
         }
         else {
-            const newPersons = persons.concat(
-                {name: newName, number: newPhone, id: (persons.length + 1)}
-            )
+            const newPerson = {name: newName, number: newPhone, id: (persons.length + 1)}
 
-            setPersons(newPersons);
+            personService.create(newPerson)
+                .then((result) => {
+                    setPersons(persons.concat(result))
+                    setNewName("")
+                    setNewPhone("")
+                })
         }
 
         setNewName("");
@@ -55,7 +76,12 @@ const App = () => {
     useEffect(() => {
         const filteredList = persons.filter(
             (el) => {
-                return el.name.toLowerCase().includes(filtWord.toLowerCase())
+                if (el.name !== undefined){
+                    return el.name.toLowerCase().includes(filtWord.toLowerCase())
+                }
+                else {
+                    return false
+                }
             }
         )
 
@@ -65,6 +91,7 @@ const App = () => {
     useEffect(() => {
         setFilteredList(persons);
     }, [persons]);
+
 
     const handleFilterChange = (event) => {
         setFiltWord(event.target.value);
@@ -82,7 +109,7 @@ const App = () => {
                     handleNameChange={handleNameChange}
                     handlePhoneChange={handlePhoneChange}/>
             <h3>Numbers</h3>
-            <People filteredList={filteredList}/>
+            <People filteredList={filteredList} persons={persons} setPersons={setPersons} setFilterWord={setFiltWord} setFilteredList={setFilteredList}/>
       </div>
     );
 }
