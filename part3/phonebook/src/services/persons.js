@@ -4,7 +4,6 @@ const baseURL = "https://mern-node-js-production.up.railway.app/api/persons"
 
 const getAll = () => {
     const request = axios.get(baseURL)
-    console.log(baseURL)
     return request.then(response => response.data)
 }
 
