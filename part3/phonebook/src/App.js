@@ -49,14 +49,20 @@ const App = () => {
                                 setPersons(result)
                                 setNewName("")
                                 setNewPhone("")
+
+                                setNotification( `Updated ${newName}`)
+
+                                setTimeout(() => {
+                                    setNotification(null);
+                                }, 2500)
                             })
-                    })
+                    }).catch(error => {
+                        setError(error.message)
 
-                setNotification( `Updated ${newName}`)
-
-                setTimeout(() => {
-                    setNotification(null);
-                }, 2500)
+                        setTimeout(() => {
+                            setError(null);
+                        }, 2500)
+                })
             }
         }
         else {
